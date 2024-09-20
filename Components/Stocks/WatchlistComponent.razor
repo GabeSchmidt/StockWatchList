@@ -1,0 +1,33 @@
+﻿
+<div>
+    <MudAutocomplete @bind-Value="stockSelected"
+                     SearchFunc="Search"
+                     Variant="Variant.Outlined"
+                     Label="Enter a company name or stock symbol"
+                     Margin="Margin.None"
+                     Clearable="true" />
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="StockSelected">Add to Watchlist</MudButton>
+</div>
+
+
+@if (watchlist != null)
+{
+    <MudDataGrid Items="@watchlist" Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="margin-top:20px;">
+        <Columns>
+            <PropertyColumn Property="x => x.symbol" Title="Symbol" />
+            <PropertyColumn Property="x => x.name" Title="Company" />
+            <PropertyColumn Property="x => decimal.Parse(x.previous_close)" Title="Previous Close" Format="C" />
+            <PropertyColumn Property="x => decimal.Parse(x.change)" Title="Change" Format="C" />
+            <PropertyColumn Property="x => decimal.Parse(x.percent_change)/100" Title="Percent Change" Format="P" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary"
+                            OnClick="@(async() => await ViewChart(context?.Item?.symbol, context?.Item?.name))">History</MudButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.Clear" OnClick="@(async() => await DeleteFromWatchlist(context?.Item))" />
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}

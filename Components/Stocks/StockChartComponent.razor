@@ -1,0 +1,21 @@
+﻿<style>
+    .mud-charts-xaxis text {
+        writing-mode: sideways-lr;
+        transform: translateY(25px);
+    }
+
+    .mud-chart-line {
+        overflow: visible;
+    }
+</style>
+
+<div style="margin-left:100px;">
+    <MudChart 
+        LegendPosition="Position.Top" 
+        ChartType="ChartType.Line" 
+        ChartSeries="@series" 
+        XAxisLabels="@XAxisLabels" 
+        Width="800px" 
+        Height="750px" 
+        />
+</div>

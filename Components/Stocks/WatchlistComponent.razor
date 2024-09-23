@@ -12,13 +12,56 @@
 
 @if (watchlist != null)
 {
+    <MudStack Row Class="d-flex justify-end" Style="margin-right:5px;">
+        <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary" OnClick="@GetWatchlist" Disabled="@disableRefreshbutton">Refresh</MudButton>
+    </MudStack>
+
     <MudDataGrid Items="@watchlist" Filterable="false" SortMode="@SortMode.None" Groupable="false" Style="margin-top:20px;">
         <Columns>
             <PropertyColumn Property="x => x.symbol" Title="Symbol" />
             <PropertyColumn Property="x => x.name" Title="Company" />
             <PropertyColumn Property="x => decimal.Parse(x.previous_close)" Title="Previous Close" Format="C" />
-            <PropertyColumn Property="x => decimal.Parse(x.change)" Title="Change" Format="C" />
-            <PropertyColumn Property="x => decimal.Parse(x.percent_change)/100" Title="Percent Change" Format="P" />
+
+            <TemplateColumn Title="Change">
+                <CellTemplate>
+                    <MudStack Row>
+                            @if(decimal.Parse(context?.Item?.change) < 0.0m)
+                            {
+                                <MudText style="color:red; font-size:medium;">
+                                    <b>@(string.Concat("-", decimal.Parse(context?.Item?.change).ToString("C").Replace("(", string.Empty).Replace(")", string.Empty)))</b>
+                                </MudText>
+                            }
+                            else
+                            {
+                                <MudText style="color:green; font-size:medium;">
+                                    <b>@(string.Concat("+", decimal.Parse(context?.Item?.change).ToString("C").Replace("(", string.Empty).Replace(")", string.Empty)))</b>
+                                </MudText>
+                            }
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+
+            <TemplateColumn Title="Percent Change">
+                <CellTemplate>
+                    <MudStack Row>
+                        @if (decimal.Parse(context?.Item?.change) < 0.0m)
+                        {
+                            <MudText style="color:red; font-size:medium;" Class="d-flex align-center justify-center">
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" />
+                                <b>@((decimal.Parse(context?.Item?.percent_change) / 100).ToString("P").Replace("-", string.Empty))</b>
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText style="color:green;  font-size:medium;" Class="d-flex align-center justify-center">
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" />
+                                <b>@((decimal.Parse(context?.Item?.percent_change) / 100).ToString("P"))</b>
+                            </MudText>
+                        }
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+
             <TemplateColumn CellClass="d-flex justify-end">
                 <CellTemplate>
                     <MudStack Row>
@@ -28,6 +71,7 @@
                     </MudStack>
                 </CellTemplate>
             </TemplateColumn>
+
         </Columns>
     </MudDataGrid>
 }

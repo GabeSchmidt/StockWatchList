@@ -6,6 +6,7 @@ using CodingDemo.Services.TwelveData;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using System.Timers;
 
 namespace CodingDemo.Components.Stocks
 {
@@ -22,6 +23,8 @@ namespace CodingDemo.Components.Stocks
         List<Quote> watchlist = new List<Quote>();
         string UserName { get; set; }
         string stockSelected { get; set; }
+        System.Threading.Timer timer { get; set; }
+        bool disableRefreshbutton = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -48,13 +51,20 @@ namespace CodingDemo.Components.Stocks
 
         async Task GetWatchlist()
         {
+            disableRefreshbutton = true;
+
             userStocks = await loggingService.GetWatchlist(UserName);
-            var stocks = string.Join(",", userStocks);
+            if (userStocks != null)
+            {
+                var stocks = string.Join(",", userStocks);
 
-            watchlist.Clear();
-            watchlist = await twelveDataService.Quote(stocks);
+                watchlist.Clear();
+                watchlist = await twelveDataService.Quote(stocks);
 
-            StateHasChanged();
+                await EnableRefreshButton();
+
+                StateHasChanged();
+            }
         }
 
         async Task<IEnumerable<string>?> Search(string value, CancellationToken token)
@@ -102,6 +112,21 @@ namespace CodingDemo.Components.Stocks
             watchlist.Remove(quote);
 
             StateHasChanged();
+        }
+
+        async Task EnableRefreshButton()
+        {
+            if (timer != null)
+                await timer.DisposeAsync();
+
+            timer = new System.Threading.Timer(x =>
+            {
+                InvokeAsync(() =>
+                {
+                    disableRefreshbutton = false;
+                    StateHasChanged();
+                });
+            }, null, TimeSpan.FromMinutes(1), TimeSpan.FromMinutes(1));
         }
     }
 }

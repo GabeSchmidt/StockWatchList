@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using CodingDemo.Interfaces.DAL;
 using CodingDemo.Services.DAL;
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using Serilog;
+using Serilog.Sinks.MSSqlServer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,17 @@ builder.Services.AddTransient<ITwelveDataService, TwelveDataService>();
 builder.Services.AddDbContext<LoggingDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("Logging")), ServiceLifetime.Transient);
 
 builder.Services.AddTransient<ILoggingService, LoggingService>();
+
+var serilogColumnOptions = new ColumnOptions();
+serilogColumnOptions.Id.DataType = System.Data.SqlDbType.BigInt;
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo
+    .MSSqlServer(
+        columnOptions: serilogColumnOptions,
+        connectionString: builder.Configuration.GetConnectionString("Logging"),
+        sinkOptions: new MSSqlServerSinkOptions { TableName = "LogEvents" })
+    .CreateLogger();
 
 var app = builder.Build();
 

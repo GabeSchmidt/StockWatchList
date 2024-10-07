@@ -2,6 +2,8 @@
 using CodingDemo.Interfaces.DAL;
 using CodingDemo.Interfaces.TwelveData;
 using CodingDemo.Models.TwelveData;
+using Serilog;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -48,6 +50,7 @@ namespace CodingDemo.Services.TwelveData
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -79,6 +82,7 @@ namespace CodingDemo.Services.TwelveData
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -98,6 +102,7 @@ namespace CodingDemo.Services.TwelveData
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -126,6 +131,7 @@ namespace CodingDemo.Services.TwelveData
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -158,6 +164,7 @@ namespace CodingDemo.Services.TwelveData
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }

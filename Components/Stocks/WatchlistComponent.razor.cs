@@ -60,10 +60,9 @@ namespace CodingDemo.Components.Stocks
 
                 watchlist.Clear();
                 watchlist = await twelveDataService.Quote(stocks);
+                StateHasChanged();
 
                 await EnableRefreshButton();
-
-                StateHasChanged();
             }
         }
 

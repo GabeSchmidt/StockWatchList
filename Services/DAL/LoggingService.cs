@@ -2,6 +2,8 @@
 using CodingDemo.Interfaces.DAL;
 using CodingDemo.Models.TwelveData;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using System.Reflection;
 
 namespace CodingDemo.Services.DAL
 {
@@ -23,6 +25,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -36,7 +39,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
             }
         }
 
@@ -48,7 +51,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
             }
         }
 
@@ -63,6 +66,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
                 return null;
             }
         }
@@ -79,7 +83,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
             }
         }
 
@@ -100,7 +104,7 @@ namespace CodingDemo.Services.DAL
             }
             catch (Exception ex)
             {
-
+                Log.Error(ex, string.Concat((MethodBase.GetCurrentMethod().DeclaringType.FullName, ".", MethodBase.GetCurrentMethod().Name)));
             }
         }
     }
